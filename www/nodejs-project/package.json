@@ -1,0 +1,14 @@
+{
+  "name": "node_ytmp3_converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
+    "simple-get": "^3.0.3",
+    "ytdl-core": "^0.29.5"
+  }
+}
