@@ -7,8 +7,12 @@ document.addEventListener('deviceready', function() {
       $('yt_url').onchange = function() {
         const val = this.value.trim()
         if(val) {
-          nodejs.channel.post('fetchMP3', this.value)
+          // nodejs.channel.post('fetchMP3', this.value)
           this.value = ''
+
+          console.log('>>>>',ffmpeg.exec)
+          //ffmpeg.exec("-version", success => alert(success), failure => alert(failure))
+
         }
       }
       

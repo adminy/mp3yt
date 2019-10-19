@@ -4,8 +4,8 @@ let youtubeRequestsCounter = 0
 const cordova = require('cordova-bridge')
 const ytdl = require('ytdl-core')
 
-// const fs = require('fs')
-// const get = require('simple-get')
+const fs = require('fs')
+const get = require('simple-get')
 // const ffmpeg = require('fluent-ffmpeg')
 
 const extractYoutubeCode = urlString => {
@@ -13,18 +13,18 @@ const extractYoutubeCode = urlString => {
     const ytCode = tmp && tmp.length > 0 ? tmp[1] : urlString
     return ytCode
 }
-// const downloadYtImg = (path, ytCode, imageDownloadedCallback) => {
-//     get.concat(`https://img.youtube.com/vi/${ytCode}/hqdefault.jpg`, 
-//         (downloadError, res, data) => {
-//             if (downloadError) throw downloadError
-//             // console.log(res.statusCode) // 200
-//             var filePath = `${path}/${ytCode}.jpg`
-//             fs.writeFile(filePath, data, fileError => {
-//                 if(fileError) throw fileError
-//                 imageDownloadedCallback(filePath) //image saved
-//             })
-//     })
-// }
+const downloadYtImg = (path, ytCode, imageDownloadedCallback) => {
+    get.concat(`https://img.youtube.com/vi/${ytCode}/hqdefault.jpg`, 
+        (downloadError, res, data) => {
+            if (downloadError) throw downloadError
+            // console.log(res.statusCode) // 200
+            var filePath = `${path}/${ytCode}.jpg`
+            fs.writeFile(filePath, data, fileError => {
+                if(fileError) throw fileError
+                imageDownloadedCallback(filePath) //image saved
+            })
+    })
+}
 // const downloadYtVideo = (json) => {
     
 //     let {   //required
@@ -84,10 +84,10 @@ const fetchMP3 = (str, finished) => {
     const ytCode = extractYoutubeCode(str)
     // const ytFileName = `${__dirname}/cache/${ytCode}`
     // const ytURL = youtubeVideoURL + ytCode
-
-    ytInfo(ytCode, (title, audioFormats, songLength) => {
-        finished(title, audioFormats)
-//         downloadYtImg(__dirname + '/cache', ytCode, imgFile => {
+    finished(__dirname, {})
+    // ytInfo(ytCode, (title, audioFormats, songLength) => {
+        // finished(title, audioFormats)
+        // downloadYtImg(__dirname + '/cache', ytCode, imgFile => {
 //             downloadYtVideo({
 //                 ytURL,
 //                 output: `${ytFileName}.mp3`,
@@ -100,7 +100,7 @@ const fetchMP3 = (str, finished) => {
 //                 }
 //             })
 //         })
-    })
+    // })
 }
 
 cordova.channel.on('fetchMP3', (url) => {

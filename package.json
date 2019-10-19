@@ -1,27 +1,28 @@
 {
-  "name": "helloworld",
-  "displayName": "HelloCordova",
+  "name": "mp3yt",
+  "displayName": "Mp3 Youtube Downloader",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
+  "description": "An Mp3 Youtube Downloader in cordova with nodejs integration",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ios": "cordova emulate ios"
   },
   "keywords": [
-    "ecosystem:cordova"
+    "ecosystem:cordova",
+    "ecosystem:nodejs",
+    "youtube"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Marin Bivol",
   "license": "Apache-2.0",
   "dependencies": {
-    "cordova-ios": "^5.0.1",
+    "cordova-ios": "git+https://github.com/apache/cordova-ios.git",
+    "cordova-plugin-ffmpeg": "git+https://github.com/adminy/cordova-plugin-ffmpeg.git",
     "nodejs-mobile-cordova": "^0.3.4"
   },
   "cordova": {
     "plugins": {
-      "nodejs-mobile-cordova": {}
+      "nodejs-mobile-cordova": {},
+      "com.marin.ffmpeg": {}
     },
-    "platforms": [
-      "ios"
-    ]
+    "platforms": []
   }
 }
