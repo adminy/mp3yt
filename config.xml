@@ -24,5 +24,6 @@
         <allow-intent href="itms-apps:*" />
         <!-- Minimum ios version 10.0 -->
         <!-- <preference name="deployment-target" value="12.0" /> -->
+        <preference name="BackupWebStorage" value="none" />
     </platform>
 </widget>

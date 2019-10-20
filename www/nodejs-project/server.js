@@ -1,23 +1,22 @@
 
 const youtubeVideoURL = 'http://www.youtube.com/watch?v='
+const CACHE_DIR = `${__dirname}/cache`
 let youtubeRequestsCounter = 0
 const cordova = require('cordova-bridge')
 const ytdl = require('ytdl-core')
-
-const fs = require('fs')
 const get = require('simple-get')
-// const ffmpeg = require('fluent-ffmpeg')
+const fs = require('fs')
 
 const extractYoutubeCode = urlString => {
     const tmp = urlString.match(/^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/)
     const ytCode = tmp && tmp.length > 0 ? tmp[1] : urlString
     return ytCode
 }
+
 const downloadYtImg = (path, ytCode, imageDownloadedCallback) => {
     get.concat(`https://img.youtube.com/vi/${ytCode}/hqdefault.jpg`, 
         (downloadError, res, data) => {
-            if (downloadError) throw downloadError
-            // console.log(res.statusCode) // 200
+            if (downloadError) throw downloadError // console.log(res.statusCode) // 200
             var filePath = `${path}/${ytCode}.jpg`
             fs.writeFile(filePath, data, fileError => {
                 if(fileError) throw fileError
@@ -25,47 +24,15 @@ const downloadYtImg = (path, ytCode, imageDownloadedCallback) => {
             })
     })
 }
-// const downloadYtVideo = (json) => {
-    
-//     let {   //required
-//         ytURL,
-//         output,
-//         mp3ConvertedCallback,
-//             //optional
-//         downloadProgressCallback,
-//         convertProgressCallback 
-//     } = json;
 
-//     downloadProgressCallback = downloadProgressCallback || (()=>{})
-//     convertProgressCallback = convertProgressCallback || (()=>{})
-//     ffmpeg(ytdl(ytURL).on('progress', downloadProgressCallback))
-//     .addOptions(['-vn', '-c:a', 'libmp3lame'])
-//     .on('error', error => console.log(error))
-//     .on('end', mp3ConvertedCallback)
-//     .on('progress', convertProgressCallback)
-//     .output(output)
-//     .run()
-// }
-// const addCoverArt = json => {
-//     json.coverArtProgressCallback = json.coverArtProgressCallback || (()=>{})
-//     const mp3 = `${json.ytFileName}.mp3`
-//     ffmpeg()
-//     .input(mp3)
-//     .input(json.imgFile)
-//     .addOptions(['-c:a', 'copy', '-map', '0', '-map', '1'])
-//     .outputFormat('mp3')
-//     .on('error', error => console.log(error))
-//     .on('end', () => {
-//         fs.unlinkSync(mp3)
-//         fs.unlinkSync(json.imgFile)
-//         json.doneCallback()
-//     })
-//     .on('progress', json.coverArtProgressCallback)
-//     .output(json.ytFileName)
-//     .run()
-// }
-const whiteListedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ '
-const cleanString = str => str.split('')
+const downloadYtVideo = (CACHE_PATH, ytCode, finishedCallback) => {
+    const ytFileName = `${CACHE_PATH}/${ytCode}.flv`
+    const ytURL = youtubeVideoURL + ytCode
+    ytdl(ytURL).pipe(fs.createWriteStream(ytFileName)).on('close', () => finishedCallback(ytFileName))
+}
+
+const whiteListedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'
+const cleanString = str => str.replace(/ /g, '-').split('')
     .map(c => whiteListedChars.indexOf(c) !== -1 ?  c : '')
     .join('')
 
@@ -73,7 +40,7 @@ const ytInfo = (ytCode, ytInfoRetrievedCallback) => {
     ytdl.getInfo(youtubeVideoURL + ytCode, (err, songInfo) => {
         if (err) console.log(err)
         else {
-            const audioFormats = ytdl.filterFormats(songInfo.formats, 'audioonly')
+            const audioFormats = [] //ytdl.filterFormats(songInfo.formats, 'audioonly')
             const title = cleanString(songInfo.title)
             ytInfoRetrievedCallback(title, audioFormats, songInfo.length_seconds)
         }
@@ -82,31 +49,36 @@ const ytInfo = (ytCode, ytInfoRetrievedCallback) => {
 
 const fetchMP3 = (str, finished) => {
     const ytCode = extractYoutubeCode(str)
-    // const ytFileName = `${__dirname}/cache/${ytCode}`
-    // const ytURL = youtubeVideoURL + ytCode
-    finished(__dirname, {})
-    // ytInfo(ytCode, (title, audioFormats, songLength) => {
-        // finished(title, audioFormats)
-        // downloadYtImg(__dirname + '/cache', ytCode, imgFile => {
-//             downloadYtVideo({
-//                 ytURL,
-//                 output: `${ytFileName}.mp3`,
-//                 mp3ConvertedCallback: () => {
-//                     addCoverArt({
-//                         imgFile,
-//                         ytFileName,
-//                         doneCallback: finished
-//                     })
-//                 }
-//             })
-//         })
-    // })
+    ytInfo(ytCode, (title, audioFormats, songLength) => {
+        cordova.channel.post('status', `Fetched info - title: ${title} <br><img src='https://img.youtube.com/vi/${ytCode}/hqdefault.jpg'>`)
+        downloadYtImg(CACHE_DIR, ytCode, imgFile => {
+            cordova.channel.post('status', `Downloaded image ...<br><img src='https://img.youtube.com/vi/${ytCode}/hqdefault.jpg'>`)
+            downloadYtVideo(CACHE_DIR, ytCode, videoFile => {
+                cordova.channel.post('status', `Downloaded video ...<br><img src='https://img.youtube.com/vi/${ytCode}/hqdefault.jpg'>`)
+                finished(ytCode, title, imgFile, videoFile)
+            })
+        })
+    })
 }
 
 cordova.channel.on('fetchMP3', (url) => {
-    cordova.channel.post('status', 'Processing Url: ' + url)
-    fetchMP3('http://youtube.com/watch?v=GZjt_sA2eso', (title, audioFormats) => {
-       cordova.channel.post('ready', youtubeRequestsCounter++ + ':' + title)
-       cordova.channel.post('status', JSON.stringify(audioFormats) )
+    // url = 'http://youtube.com/watch?v=GZjt_sA2eso'  //for now everything 1 url
+    cordova.channel.post('status', 'Processing Url: ' + url + '<br>')
+    fetchMP3(url, (ytCode, title, imgFile, videoFile) => {
+       cordova.channel.post('ready', JSON.stringify({ counter: youtubeRequestsCounter++, videoFile, imgFile, title, ytCode, CACHE_DIR }))
     })
 })
+
+cordova.channel.on('init', () => {
+    if (!fs.existsSync(CACHE_DIR))
+        fs.mkdirSync(CACHE_DIR)
+    //TODO: clean the CACHE_DIR every time
+    cordova.channel.post('status', 'init complete')
+})
+
+cordova.channel.on('cleanup', (files) => {
+    files = JSON.parse(files)
+    files.forEach(file => fs.unlinkSync(file))
+    cordova.channel.post('status', 'cleaned files '  + files.length)
+})
+
