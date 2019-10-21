@@ -4,10 +4,12 @@ const $ = id => document.getElementById(id)
 let isFileOpened = false, finalFile = ''
 
 document.addEventListener('deviceready', function() {
+  $('status').innerHTML = 'device is ready'
   const open = cordova.plugins.disusered.open
   nodejs.start('server.js', function startupCallback(err) {
-    if (err) console.error(err)
+    if (err) $('status').innerHTML = `<font color=red>${err}</font>`
     else {
+      $('status').innerHTML = 'nodejs started'
       //on enter tell nodejs to do work
       $('yt_url').onchange = function() {
         const val = this.value.trim()
@@ -45,7 +47,7 @@ document.addEventListener('deviceready', function() {
         $('status').innerHTML = status
       })
       // init nodejs stuff
-      nodejs.channel.post('init')
+      nodejs.channel.post('init', cordova.file.dataDirectory.slice(7))
 
     }
   })

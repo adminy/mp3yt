@@ -23,9 +23,9 @@
   },
   "cordova": {
     "plugins": {
-      "nodejs-mobile-cordova": {},
       "com.marin.ffmpeg": {},
-      "cordova-open": {}
+      "cordova-open": {},
+      "nodejs-mobile-cordova": {}
     },
     "platforms": [
       "ios"

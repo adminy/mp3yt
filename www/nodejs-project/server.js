@@ -1,7 +1,6 @@
 
 const youtubeVideoURL = 'http://www.youtube.com/watch?v='
-const CACHE_DIR = `${__dirname}/cache`
-let youtubeRequestsCounter = 0
+let youtubeRequestsCounter = 0, CACHE_DIR
 const cordova = require('cordova-bridge')
 const ytdl = require('ytdl-core')
 const get = require('simple-get')
@@ -69,7 +68,8 @@ cordova.channel.on('fetchMP3', (url) => {
     })
 })
 
-cordova.channel.on('init', () => {
+cordova.channel.on('init', (CACHE_DIRECTORY) => {
+    CACHE_DIR = CACHE_DIRECTORY
     if (!fs.existsSync(CACHE_DIR))
         fs.mkdirSync(CACHE_DIR)
     //TODO: clean the CACHE_DIR every time
