@@ -4,9 +4,10 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <!-- <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"> -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
+        <title>Youtube Mp3 Downloader</title>
     </head>
     <body>
         <div class="app">
@@ -15,9 +16,12 @@
                 <span style='color:lightblue'>MP3</span>
                 <span style='color:lightgreen'>DL</span>
             </h2>
-            <input id='yt_url' type='text' placeholder='Paste URL here Eg: http://youtube.com/watch?v=GZjt_sA2eso'><br>
+        </div>
+        <div class='main'>
+            <input id='yt_url' type='text' placeholder='Paste Youtube Link'><br>
             <div id='status' style='font-size: 13px'></div>
         </div>
+
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="nodejs-project/client.js"></script>
     </body>

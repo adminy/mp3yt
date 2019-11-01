@@ -1,7 +1,7 @@
 {
   "name": "mp3yt",
   "displayName": "Mp3 Youtube Downloader",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "description": "An Mp3 Youtube Downloader in cordova with nodejs integration",
   "scripts": {
     "ios": "cordova emulate ios"

@@ -1,7 +1,8 @@
 # Setup Instructions
 ```
+sh buildIcons.sh
 npm install
-cordova platform add ios
+cordova platform add https://github.com/apache/cordova-ios
 cd www/nodejs-project && npm install && cd ../..
 ```
 
@@ -10,3 +11,6 @@ cd www/nodejs-project && npm install && cd ../..
 
 ## Test
 `npm run ios` or `cordova emulate ios`
+
+## Deploy
+`cordova build ios --release --device`
