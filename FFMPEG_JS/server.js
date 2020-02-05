@@ -63,9 +63,9 @@ const fetchMP3 = (str, log, whenDone) => {
                 log('converted video to audio with success')
                 out.MEMFS.push({name: imageName, data: new Uint8Array(imageData)})
                 out = ffmpeg({ MEMFS: out.MEMFS, arguments: `-i ${audioName} -i ${imageName} -map 0 -map 1 -c copy -id3v2_version 3 -metadata:s:v title="AlbumCover" -metadata:s:v comment="Cover(front)" -f mp3 ${finalName}`.split(' '), stdin: () => {}}) //-f mp3
-                url = window.URL.createObjectURL(new Blob([out.MEMFS[0].data], {type: 'audio/mpeg'}));
+                // url = window.URL.createObjectURL(new Blob([out.MEMFS[0].data], {type: 'audio/mpeg'}));
                 log('added thumbnail to audio<br>...<br>Opening ' + title)
-                whenDone(url)
+                whenDone(finalName, out.MEMFS[0].data)
                 // window.location = url
                 // cordova.plugins.disusered.open(url,
                 //     () => console.log(`File ${title}.mp3 opened`),

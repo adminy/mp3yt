@@ -9,7 +9,7 @@ plugins/
 www/img/icons/*
 www/data.js
 FFMPEG_JS/build/ffmpeg/
-FFMPEG_JS/dist/
+# FFMPEG_JS/dist/
 FFMPEG_JS/lame-3.99.5/
 FFMPEG_JS/node_modules/
 FFMPEG_JS/package-lock.json
