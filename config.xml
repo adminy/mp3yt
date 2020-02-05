@@ -24,14 +24,8 @@
         <allow-intent href="itms-apps:*" />
         <!-- Minimum ios version 10.0 -->
         <!-- <preference name="deployment-target" value="12.0" /> -->
-        <preference name="WKWebViewOnly" value="true" /><!-- UIKebKit Deprecated ... -->
         <preference name="BackupWebStorage" value="none" /><!-- iCloud Fuck off -->
         <preference name="DisallowOverscroll" value="true" /><!-- Scrolling is annoying -->
-
-        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge" overwrite="true">
-            <string>Using FFMpeg Media conversion library which has the camera aspect to it, but we are not using your camera in any way at all, it just belongs to ffmpeg-mobile library discussed here: https://github.com/tanersener/mobile-ffmpeg/issues/201 do not worry, you can deny camera access, if ever asked</string>
-        </edit-config>
-
         <icon src="www/img/icons/20.png" width="20" height="20" />
         <icon src="www/img/icons/29.png" width="29" height="29" />
         <icon src="www/img/icons/40.png" width="40" height="40" />

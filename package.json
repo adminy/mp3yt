@@ -15,17 +15,11 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-ios": "git+https://github.com/apache/cordova-ios.git",
-    "cordova-open": "^1.1.0",
-    "cordova-plugin-ffmpeg": "git+https://github.com/adminy/cordova-plugin-ffmpeg.git",
-    "cordova-plugin-file": "^6.0.2",
-    "cordova-plugin-file-transfer": "^1.7.1",
-    "nodejs-mobile-cordova": "^0.3.4"
+    "cordova-open": "^1.1.0"
   },
   "cordova": {
     "plugins": {
-      "com.marin.ffmpeg": {},
-      "cordova-open": {},
-      "nodejs-mobile-cordova": {}
+      "cordova-open": {}
     },
     "platforms": [
       "ios"
