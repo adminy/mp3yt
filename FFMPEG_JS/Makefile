@@ -87,14 +87,14 @@ FFMPEG_COMMON_ARGS = \
 	--disable-lzo \
 	--enable-libmp3lame \
 	--extra-ldflags=-L/usr/local/lib --extra-cflags=-I/usr/local/include \
-	--disable-encoders \
-	--disable-decoders \
-	--disable-muxers \
-	--disable-demuxers \
-	--enable-encoder=libmp3lame,mp3,image2,mjpeg,yuvj420p \
-	--enable-decoder=mov,mp4,m4a,3gp,3g2,mj2,aac,mp3,image2,mjpeg,yuvj420p \
-	--enable-muxer=mp3 \
-	--enable-demuxer=avi,mp3 \
+	# --disable-encoders \
+	# --disable-decoders \
+	# --disable-muxers \
+	# --disable-demuxers \
+	# --enable-encoder=libmp3lame,mp3,image2,mjpeg,yuvj420p \
+	# --enable-decoder=mov,mp4,m4a,3gp,3g2,mj2,aac,mp3,image2,mjpeg,yuvj420p \
+	# --enable-muxer=mp3 \
+	# --enable-demuxer=avi,mp3 \
 
 	# --enable-encoder=mp4,vqavideo,h264,hevc,aac,webvtt,ass,srt,mjpeg,mjpegb \
 	# --enable-decoder=mp4,vqavideo,h264,hevc,aac,mp3float,mp3,mp3adufloat,mp3adu,mp3on4float,mp3on4,webvtt,ass,srt,,mjpeg,mjpegb,adpcm_ima_smjpeg \

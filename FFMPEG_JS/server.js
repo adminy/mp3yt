@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core')
 const stream = require('stream-browserify')
-const ffmpeg = require('./ffmpeg.js')
+const ffmpeg = require('./dist/ffmpeg')
 const miniget = require('miniget')
 class Stream extends stream.Writable {
     constructor() {

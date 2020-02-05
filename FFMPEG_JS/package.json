@@ -1,0 +1,17 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "miniget": "^1.6.1",
+    "stream-browserify": "^2.0.2",
+    "ytdl-core": "^1.0.7"
+  }
+}

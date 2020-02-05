@@ -1,5 +1,3 @@
-www/nodejs-project/node_modules/
-www/nodejs-project/package-lock.json
 .vscode/
 node_modules/
 package-lock.json
@@ -8,3 +6,11 @@ plugins/
 .DS_Store
 */.DS_Store
 */*/.DS_Store
+www/img/icons/*
+www/data.js
+FFMPEG_JS/build/ffmpeg/
+FFMPEG_JS/dist/
+FFMPEG_JS/lame-3.99.5/
+FFMPEG_JS/node_modules/
+FFMPEG_JS/package-lock.json
+
