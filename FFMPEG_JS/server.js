@@ -47,7 +47,7 @@ const fetchMP3 = (str, log, whenDone) => {
     ytInfo(ytCode, info => {
         const title = cleanString(info.title)
         const duration = info.length_seconds
-        log(`Fetched info - title: ${title} Duration: ${duration}`) //<br><img src='https://img.youtube.com/vi/${ytCode}/hqdefault.jpg'>`)
+        log(`<b>${title}</b><br>Duration: <b><i>${duration}</i></b>`) //<br><img src='https://img.youtube.com/vi/${ytCode}/hqdefault.jpg'>`)
         downloadYtVideo(info, videoData => {
             log('Downloaded video ...')
             downloadYtImg(ytCode, imageData => {
@@ -57,14 +57,17 @@ const fetchMP3 = (str, log, whenDone) => {
                 imageName = `${ytCode}.jpg`
                 audioName = `${ytCode}.mp3`
                 finalName = `${title}.mp3`
-                //
+
+                cmd = `-i ${audioName} -i ${imageName} -map 0 -map 1 -c copy -f mp3 -id3v2_version 3 -metadata:s:v`.split(' ')
+                cmd.push(`title="${title}"`, finalName) //'-metadata:s:v', 'comment="Cover(front)"'
+
                 MEMFS = [{name: videoName, data: new Uint8Array(videoData)}]
                 out = ffmpeg({ MEMFS, arguments: `-i ${videoName} -vn -sn -c:a libmp3lame ${audioName}`.split(' '), stdin: () => {}})
                 log('converted video to audio with success')
                 out.MEMFS.push({name: imageName, data: new Uint8Array(imageData)})
-                out = ffmpeg({ MEMFS: out.MEMFS, arguments: `-i ${audioName} -i ${imageName} -map 0 -map 1 -c copy -id3v2_version 3 -metadata:s:v title="AlbumCover" -metadata:s:v comment="Cover(front)" -f mp3 ${finalName}`.split(' '), stdin: () => {}}) //-f mp3
-                // url = window.URL.createObjectURL(new Blob([out.MEMFS[0].data], {type: 'audio/mpeg'}));
-                log('added thumbnail to audio<br>...<br>Opening ' + title)
+                
+                out = ffmpeg({ MEMFS: out.MEMFS, arguments: cmd, stdin: () => {}})
+                log('added thumbnail to audio')
                 whenDone(finalName, out.MEMFS[0].data)
                 // window.location = url
                 // cordova.plugins.disusered.open(url,
